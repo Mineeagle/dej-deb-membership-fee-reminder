@@ -69,6 +69,17 @@ class ExcelHandler:
 
 
 class EmailSender:
+    """Class to send emails
+    This class allows for a more easier handling of sending emails.
+
+    :param sender_email: Email of the sender
+    :param sender_password: Password for the account of the sender
+    :smtp_server: SMTP server; stanard is 'webmail.esperanto.de'
+    :smtp_port: port; standard is 587
+
+    Nothing needs to be changed.
+    """
+
     def __init__(
         self,
         sender_email,
@@ -86,6 +97,16 @@ class EmailSender:
         self.sender.login(sender_email, sender_password)
 
     def send_mail(self, text, subject, recipient):
+        """Send a simple email
+        This method send a simple email to a recipient.
+
+        send_mail() -> bool: returns True after sending the email
+        :param text: body of the email
+        :param subject: subject of the email
+        :param recipient: address of the recipient
+
+        Nothing needs to be changed.
+        """
         mail = MIMEText(text)
         mail["Subject"] = subject
         mail["From"] = self.sender_email
@@ -93,3 +114,4 @@ class EmailSender:
 
         self.sender.send_message(mail)
         self.sender.close()
+        return True
