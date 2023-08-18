@@ -84,8 +84,8 @@ class EmailSender:
         self,
         sender_email,
         sender_password,
-        smtp_server="webmail.esperanto.de",
-        smtp_port=587,
+        smtp_server,
+        smtp_port,
     ):
         self.sender_email = sender_email
 

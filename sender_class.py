@@ -26,8 +26,18 @@ class Sender:
     Nothing needs to be changed.
     """
 
-    def __init__(self, excel_url, sender_email, sender_password, year):
+    def __init__(
+        self,
+        excel_url,
+        sender_email,
+        sender_password,
+        year,
+        smtp_server="webmail.esperanto.de",
+        smtp_port=587,
+    ):
         self.year = year
+        self.smtp_port = smtp_port
+        self.smtp_server = smtp_server
 
         self.eh = ExcelHandler(excel_url)
         self.sender_email = sender_email
@@ -62,7 +72,12 @@ class Sender:
                 continue
 
             # Send email if email exists
-            email_sender = EmailSender(self.sender_email, self.sender_password)
+            email_sender = EmailSender(
+                self.sender_email,
+                self.sender_password,
+                self.smtp_server,
+                self.smtp_port,
+            )
             body = self.get_email_body(
                 element[Sender.LAST_NAME_COL],
                 element[Sender.INVOICE_NUMBER_COL],
