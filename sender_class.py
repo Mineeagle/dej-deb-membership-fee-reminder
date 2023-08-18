@@ -2,35 +2,54 @@ from helper_classes import ExcelHandler, EmailSender
 
 
 class Sender:
+    # Cols of the data in the excel
     LAST_NAME_COL = "d"
     EMAIL_COL = "i"
     INVOICE_NUMBER_COL = "j"
     FEE_COL = "k"
 
+    # Col and marks for sent and not sent emails
     CHECK_COL = "l"
     CHECK_TRUE = "✔"
     CHECK_FALSE = "X"
 
+    # Row with the first data entry
     START_ROW = 2
+    """ Sender class
+    This class handles the sending of the emails and extracting the files
+    
+    :param excel_url: URL of the excel file
+    :param sender_email: email address of the sender
+    :param sender_password: password to the email
+    :param year: year of the invoice
+    
+    Nothing needs to be changed.
+    """
 
-    def __init__(self, excel_url, sender_email, sender_password, year=2023):
+    def __init__(self, excel_url, sender_email, sender_password, year):
         self.year = year
 
         self.eh = ExcelHandler(excel_url)
-        print("Excel file has been loaded.")
         self.sender_email = sender_email
         self.sender_password = sender_password
+        print("Parameter set.")
 
         self.start_sending()
 
     def start_sending(self):
+        """Core method of the class
+        This is the core method of the class. It first extracts everything from the
+        excel file, and then sends emails.
+
+        Nothing needs to be changed.
+        """
         # Handle excel extraction and add check col
         excel_information = self.get_information_from_excel()
         print("Data from excel extracted.")
         self.eh.write(f"{Sender.CHECK_COL}1", "E-Mail sent")
         print("Added 'E-Mail sent' column.")
 
-        print("---")
+        print("---Sending-Log---")
 
         # Start Handling
         for row, element in enumerate(excel_information):
@@ -56,6 +75,13 @@ class Sender:
             print(f"Sent email to: {element[Sender.EMAIL_COL]}")
 
     def get_email_body(self, last_name, invoice_number, fee, year):
+        """Email body creation
+        This method creates the email body.
+
+        get_email_body() -> str: Body of the email
+
+        Adapt the body in this method.
+        """
         email_body = f"""Sehr geehrte(r) Frau/Herr {last_name},
 
 uns ist aufgefallen, dass Sie Ihren Mitgliedsbeitrag für die DEB/DEJ für das Jahr {year} noch nicht gezahlt haben.
@@ -72,9 +98,25 @@ Deutscher Esperanto-Bund/Deutsche Esperanto-Jugend
         return email_body
 
     def get_email_subject(self, invoice_number):
+        """Email subject creation
+        This method creates the email subject.
+
+        get_email_subject() -> str: Subject of the email
+
+        Nothing needs to be changed.
+        Adapt the subject in this method.
+        """
         return f"Zahlungsaufforderung DEB/DEJ {invoice_number}"
 
     def get_information_from_excel(self):
+        """Extract the information from the excel file
+        This method extracts the information from the excel file.
+
+        get_information_from_excel() -> []: List with dicts of the extracted information
+
+        Nothing needs to be changed.
+        To change the cols, please refer to class variables at the top!
+        """
         max_row = self.eh.get_max_row()
         res = []
 
@@ -92,4 +134,3 @@ Deutscher Esperanto-Bund/Deutsche Esperanto-Jugend
                 }
             )
         return res
-
