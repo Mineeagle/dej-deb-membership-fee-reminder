@@ -1,5 +1,6 @@
 from sender_class import Sender
 from getpass import getpass
+from colorama import Fore
 
 
 def get_input():
@@ -29,7 +30,7 @@ def get_input():
 
 def main():
     url, sender_email, sender_password, year, smtp_server, smtp_port = get_input()
-    print("---Got input---")
+    print(Fore.YELLOW + "---Got input---")
     Sender(url, sender_email, sender_password, year, smtp_server, smtp_port)
 
 

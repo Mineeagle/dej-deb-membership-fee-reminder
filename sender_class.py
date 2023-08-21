@@ -1,4 +1,5 @@
 from helper_classes import ExcelHandler, EmailSender
+from colorama import Fore
 
 
 class Sender:
@@ -42,7 +43,7 @@ class Sender:
         self.eh = ExcelHandler(excel_url)
         self.sender_email = sender_email
         self.sender_password = sender_password
-        print("Parameter set.")
+        print(Fore.YELLOW + "Parameter set.")
 
         self.start_sending()
 
@@ -68,7 +69,10 @@ class Sender:
             # Handle if no email exists
             if element[Sender.EMAIL_COL] is None:
                 self.eh.write(f"{Sender.CHECK_COL}{row}", Sender.CHECK_FALSE)
-                print(f"Mr./Mrs. {element[Sender.LAST_NAME_COL]} has no email address.")
+                print(
+                    Fore.RED
+                    + f"Mr./Mrs. {element[Sender.LAST_NAME_COL]} has no email address."
+                )
                 continue
 
             # Send email if email exists
@@ -87,7 +91,7 @@ class Sender:
             subject = self.get_email_subject(element[Sender.INVOICE_NUMBER_COL])
             email_sender.send_mail(body, subject, element[Sender.EMAIL_COL])
             self.eh.write(f"{Sender.CHECK_COL}{row}", Sender.CHECK_TRUE)
-            print(f"Sent email to: {element[Sender.EMAIL_COL]}")
+            print(Fore.GREEN + f"Sent email to: {element[Sender.EMAIL_COL]}")
 
     def get_email_body(self, last_name, invoice_number, fee, year):
         """Email body creation
