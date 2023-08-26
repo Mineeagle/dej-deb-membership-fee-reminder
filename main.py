@@ -4,7 +4,7 @@ from colorama import Fore
 
 
 def get_input():
-    print("version: 1.2")
+    print("version: 1.2.1")
     url = input("Please enter the url of the Excel file. > ")
     sender_email = input("Please enter the sender email adress. > ")
     sender_password = getpass(
