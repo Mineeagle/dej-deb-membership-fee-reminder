@@ -9,7 +9,7 @@ There are two version to install and run the program.
 1. Download the repo. A possible way to do so, is by clicking on the light blue "<> Code" button on the top left. Then, just select "Download ZIP" and unpack the downloaded dicrectory.
 2. A file called main.py should be run, to start the program.
 ## How to use the program
-The first line after starting the program shows the current version. Please make sure it is the most up-do-date one. Then follow through the shown steps and enter the required information.
+The first line after starting the program shows the current version. Please make sure it is the most up-to-date one. Then follow through the shown steps and enter the required information.
 
 Please make sure that your excel file has the following structure:
 
