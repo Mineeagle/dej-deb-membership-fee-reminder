@@ -108,7 +108,7 @@ Aus diesem Grund bitten wir Sie den Mitgliedsbeitrag von {fee}€ unter der Rech
 
 [Daten eines Kontos]
 
-Sollten Sie der Zahlungsaufforderung nicht nachkommen, sehen wir uns dazu verpflichtet anderweitige Maßnahmen einzuleiten.
+Wir bedanken uns herzlich, dass Sie als Mitglied mit Ihrem Beitrag die Esperanto-Kultur in Deutschland unterstützen.
 
 Mit freundlichen Grüßen,
 
