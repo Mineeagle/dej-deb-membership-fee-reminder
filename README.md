@@ -1,7 +1,7 @@
 # dej-deb-membership-fee-reminder - v. 1.2.2
 This program helps to send out emails to remind members to pay their membership fees. 
 ## How to run the program
-There are two version to install and run the program.
+There are two ways to install and run the program.
 ### Using the exe file
 1. Download the repo. A possible way to do so, is by clicking on the light blue "<> Code" button on the top left. Then, just select "Download ZIP" and unpack the downloaded dicrectory.
 2. You'll find a file called "main.exe". Double click the file to run the program.
