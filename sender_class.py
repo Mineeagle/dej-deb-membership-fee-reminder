@@ -8,6 +8,7 @@ class Sender:
     EMAIL_COL = "i"
     INVOICE_NUMBER_COL = "j"
     FEE_COL = "k"
+    COMPANY_COL = "B"
 
     # Col and marks for sent and not sent emails
     CHECK_COL = "l"
@@ -82,19 +83,27 @@ class Sender:
                 self.smtp_server,
                 self.smtp_port,
             )
-            body = self.get_email_body(
-                element[Sender.LAST_NAME_COL],
-                element[Sender.INVOICE_NUMBER_COL],
-                element[Sender.FEE_COL],
-                self.year,
-            )
+            if element[Sender.LAST_NAME_COL] is not None:
+                body = self.get_email_body_person(
+                    element[Sender.LAST_NAME_COL],
+                    element[Sender.INVOICE_NUMBER_COL],
+                    element[Sender.FEE_COL],
+                    self.year
+                )
+            else:
+                body = self.get_email_body_company(
+                    element[Sender.COMPANY_COL],
+                    element[Sender.INVOICE_NUMBER_COL],
+                    element[Sender.FEE_COL],
+                    self.year
+                )
             subject = self.get_email_subject(element[Sender.INVOICE_NUMBER_COL])
             email_sender.send_mail(body, subject, element[Sender.EMAIL_COL])
             self.eh.write(f"{Sender.CHECK_COL}{row}", Sender.CHECK_TRUE)
             print(Fore.GREEN + f"Sent email to: {element[Sender.EMAIL_COL]}")
 
-    def get_email_body(self, last_name, invoice_number, fee, year):
-        """Email body creation
+    def get_email_body_person(self, last_name, invoice_number, fee, year):
+        """Email body creation for singular people
         This method creates the email body.
 
         get_email_body() -> str: Body of the email
@@ -102,6 +111,29 @@ class Sender:
         Adapt the body in this method.
         """
         email_body = f"""Sehr geehrte(r) Frau/Herr {last_name},
+
+uns ist aufgefallen, dass Sie Ihren Mitgliedsbeitrag für die DEB/DEJ für das Jahr {year} noch nicht gezahlt haben.
+Aus diesem Grund bitten wir Sie den Mitgliedsbeitrag von {fee}€ unter der Rechnungsnummer {invoice_number} auf folgendes Konto zu überweisen:
+
+[Daten eines Kontos]
+
+Wir bedanken uns herzlich, dass Sie als Mitglied mit Ihrem Beitrag die Esperanto-Kultur in Deutschland unterstützen.
+
+Mit freundlichen Grüßen,
+
+Deutscher Esperanto-Bund/Deutsche Esperanto-Jugend
+"""
+        return email_body
+
+    def get_email_body_company(self, company, invoice_number, fee, year):
+        """Email body creation for a company
+        This method creates the email body.
+
+        get_email_body() -> str: Body of the email
+
+        Adapt the body in this method.
+        """
+        email_body = f"""Sehr geehrte Damen und Herren des Unternehmens {company},
 
 uns ist aufgefallen, dass Sie Ihren Mitgliedsbeitrag für die DEB/DEJ für das Jahr {year} noch nicht gezahlt haben.
 Aus diesem Grund bitten wir Sie den Mitgliedsbeitrag von {fee}€ unter der Rechnungsnummer {invoice_number} auf folgendes Konto zu überweisen:
@@ -144,12 +176,14 @@ Deutscher Esperanto-Bund/Deutsche Esperanto-Jugend
             last_name = self.eh.read(f"{Sender.LAST_NAME_COL}{row_num}")
             invoice_number = self.eh.read(f"{Sender.INVOICE_NUMBER_COL}{row_num}")
             fee = self.eh.read(f"{Sender.FEE_COL}{row_num}")
+            company = self.eh.read(f"{Sender.COMPANY_COL}{row_num}")
             res.append(
                 {
                     Sender.EMAIL_COL: email,
                     Sender.LAST_NAME_COL: last_name,
                     Sender.INVOICE_NUMBER_COL: invoice_number,
                     Sender.FEE_COL: fee,
+                    Sender.COMPANY_COL: company,
                 }
             )
         return res
