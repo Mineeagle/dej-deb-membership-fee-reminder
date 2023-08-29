@@ -1,4 +1,4 @@
-# dej-deb-membership-fee-reminder - v. 1.2.2
+# dej-deb-membership-fee-reminder - v. 1.3.0
 This program helps to send out emails to remind members to pay their membership fees. 
 ## How to run the program
 There are two ways to install and run the program.
