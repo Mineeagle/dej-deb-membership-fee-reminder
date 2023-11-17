@@ -55,10 +55,42 @@ class Test_Sender:
         max_row = self.sender.eh.get_max_row()
         check_col = self.sender.CHECK_COL
 
-        for row in range(1, max_row+1):
+        for row in range(1, max_row + 1):
             self.sender.eh.write(f"{check_col}{row}", None)
-        
+
         del self.sender
+
+    @patch("sender_class.EmailSender")
+    @patch("sender_class.print")
+    def test_start_sending(self, mock_print, mock_email):
+        # setup mocks
+        class Mock_EmailSender:
+            emails_sent = 0
+            def __init__(self, s_email, s_psw, smtp_s, smtp_p):
+                pass
+
+            def send_mail(self, body, subject, recipient):
+                Mock_EmailSender.emails_sent += 1
+        mock_email.return_value = Mock_EmailSender(1, 2, 3, 4)
+
+        # run method
+        self.sender.start_sending()
+
+        # asserts
+        max_row = self.sender.eh.get_max_row()
+        existent_emails = 0
+        # check excel
+        check_col = self.sender.CHECK_COL
+        email_col = self.sender.EMAIL_COL
+        for row in range(2, max_row + 1):
+            if self.sender.eh.read(f"{email_col}{row}") != None:
+                assert self.sender.eh.read(f"{check_col}{row}") == self.sender.CHECK_TRUE
+                existent_emails += 1
+            else:
+                assert self.sender.eh.read(f"{check_col}{row}") == self.sender.CHECK_FALSE
+        # check amount of emails sent
+        assert Mock_EmailSender.emails_sent == existent_emails
+        
 
     def test_get_information_from_excel(self):
         sender_res = self.sender.get_information_from_excel()
