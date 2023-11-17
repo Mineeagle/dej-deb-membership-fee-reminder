@@ -88,14 +88,14 @@ class Sender:
                     element[Sender.LAST_NAME_COL],
                     element[Sender.INVOICE_NUMBER_COL],
                     element[Sender.FEE_COL],
-                    self.year
+                    self.year,
                 )
             else:
                 body = self.get_email_body_company(
                     element[Sender.COMPANY_COL],
                     element[Sender.INVOICE_NUMBER_COL],
                     element[Sender.FEE_COL],
-                    self.year
+                    self.year,
                 )
             subject = self.get_email_subject(element[Sender.INVOICE_NUMBER_COL])
             email_sender.send_mail(body, subject, element[Sender.EMAIL_COL])
@@ -179,11 +179,15 @@ Deutscher Esperanto-Bund/Deutsche Esperanto-Jugend
             company = self.eh.read(f"{Sender.COMPANY_COL}{row_num}")
             res.append(
                 {
-                    Sender.EMAIL_COL: email,
-                    Sender.LAST_NAME_COL: last_name,
-                    Sender.INVOICE_NUMBER_COL: invoice_number,
-                    Sender.FEE_COL: fee,
-                    Sender.COMPANY_COL: company,
+                    Sender.EMAIL_COL: str(email) if email is not None else None,
+                    Sender.LAST_NAME_COL: str(last_name)
+                    if last_name is not None
+                    else None,
+                    Sender.INVOICE_NUMBER_COL: str(invoice_number)
+                    if invoice_number is not None
+                    else None,
+                    Sender.FEE_COL: str(fee) if fee is not None else None,
+                    Sender.COMPANY_COL: str(company) if company is not None else None,
                 }
             )
         return res
